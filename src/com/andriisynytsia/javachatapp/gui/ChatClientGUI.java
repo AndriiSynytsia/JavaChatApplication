@@ -97,5 +97,9 @@ public class ChatClientGUI extends JFrame {
         SwingUtilities.invokeLater(() -> {
             new ChatClientGUI().setVisible(true);
         });
+
+        SwingUtilities.invokeLater(() -> {
+            new ChatClientGUI().setVisible(true);
+        });
     }
 }
