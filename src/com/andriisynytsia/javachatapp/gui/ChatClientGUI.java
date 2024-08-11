@@ -11,6 +11,7 @@ import java.util.Date;
 public class ChatClientGUI extends JFrame {
     private JTextArea messageArea;
     private JTextField textField;
+    private JTextPane textPane;
     private ChatClient client;
     private JButton exitButton;
     private static final String TITLE = "Chat Application";
@@ -18,16 +19,23 @@ public class ChatClientGUI extends JFrame {
     public ChatClientGUI() {
         super(TITLE);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        getRootPane().putClientProperty("apple.awt.brushMetalLook", true);
-        getRootPane().putClientProperty("apple.awt.transparentTitleBar", true);
-
         setSize(400, 500);
         setLocationRelativeTo(null);
         setVisible(true);
 
+        Color backgroundColor = new Color(240, 240, 240);
+        Color buttonColor = new Color(75,75,75);
+        Color textColor = new Color(50,50,50);
+        Font textFont = new Font("Arial", Font.PLAIN, 14);
+        Font buttonFont = new Font("Arial", Font.BOLD, 12);
+
         messageArea = new JTextArea();
         messageArea.setEditable(false);
-        add(new JScrollPane(messageArea), BorderLayout.CENTER);
+        messageArea.setBackground(backgroundColor);
+        messageArea.setForeground(textColor);
+        messageArea.setFont(textFont);
+        JScrollPane scrollPane = new JScrollPane(messageArea);
+        add(scrollPane, BorderLayout.CENTER);
 
         // Username entry through dialog box
         String name = JOptionPane.showInputDialog(this, "Enter your name:", "Name Entry", JOptionPane.PLAIN_MESSAGE);
@@ -35,14 +43,21 @@ public class ChatClientGUI extends JFrame {
 
         // Modified user message with timestamp and assigned username
         textField = new JTextField();
+        textField.setFont(textFont);
+        textField.setBackground(backgroundColor);
+        textField.setForeground(textColor);
         textField.addActionListener(e -> {
-            String message = "[" + new SimpleDateFormat("HH:mm:ss").format(new Date()) + "] " + name + ": " + textField.getText();
+            String timestamp = "[" + new SimpleDateFormat("HH:mm:ss").format(new Date()) + "] " + name + ": ";
+            String message = timestamp + textField.getText();
             client.sendMessage(message);
             textField.setText("");
         });
 
         // Exit button
         exitButton = new JButton("Exit");
+        exitButton.setBackground(buttonColor);
+        exitButton.setFont(buttonFont);
+        exitButton.setForeground(Color.WHITE);
         exitButton.addActionListener(e -> {
             // Initialized departure message
             String departureMessage = name + " has left the chat.";
@@ -59,6 +74,7 @@ public class ChatClientGUI extends JFrame {
         });
 
         JPanel bottomPanel = new JPanel(new BorderLayout());
+        bottomPanel.setBackground(backgroundColor);
         bottomPanel.add(textField, BorderLayout.CENTER);
         bottomPanel.add(exitButton, BorderLayout.EAST);
         add(bottomPanel, BorderLayout.SOUTH);
